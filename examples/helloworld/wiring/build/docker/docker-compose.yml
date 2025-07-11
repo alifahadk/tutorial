@@ -1,0 +1,31 @@
+
+version: '3'
+services:
+
+  a_container:
+    build:
+      context: a_container
+      dockerfile: ./Dockerfile
+    hostname: a_container
+    expose:
+     - "2000"
+    ports:
+     - "${A_SERVICE_HTTP_BIND_ADDR?a_service.http.bind_addr must be set by the calling environment}:2000"
+    environment:
+     - A_SERVICE_HTTP_BIND_ADDR=a_container:2000
+     - B_SERVICE_HTTP_DIAL_ADDR=b_container:2000
+    restart: always
+
+  b_container:
+    build:
+      context: b_container
+      dockerfile: ./Dockerfile
+    hostname: b_container
+    expose:
+     - "2000"
+    ports:
+     - "${B_SERVICE_HTTP_BIND_ADDR?b_service.http.bind_addr must be set by the calling environment}:2000"
+    environment:
+     - B_SERVICE_HTTP_BIND_ADDR=b_container:2000
+    restart: always
+

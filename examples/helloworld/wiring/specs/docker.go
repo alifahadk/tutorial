@@ -31,12 +31,14 @@ func makeDockerSpec(spec wiring.WiringSpec) ([]string, error) {
 		procName := strings.ReplaceAll(service_name, "service", "process")
 		cntrName := strings.ReplaceAll(service_name, "service", "container")
 		tutorial.Instrument(spec, service_name)
-		tutorial.AddHelloMethod(spec, service_name)
-		tutorial.AddHelloParam(spec, service_name)
+		//tutorial.AddHelloMethod(spec, service_name)
+		//tutorial.AddHelloParam(spec, service_name)
 		http.Deploy(spec, service_name)
 		goproc.CreateProcess(spec, procName, service_name)
 		return linuxcontainer.CreateContainer(spec, cntrName, procName)
 	}
+
+	//servicea := servicegeneration.create(name, apis {api_name, processing_rate, downstream_calls})
 	serviceb := workflow.Service[*serviceb.ServiceBImpl](spec, "b_service", cache)
 	servicea := workflow.Service[*servicea.ServiceAImpl](spec, "a_service", serviceb)
 	cntrb := applyLoggerDefaults(serviceb)
